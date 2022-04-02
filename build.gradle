@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+    id 'net.saliman.properties' version '1.5.2'
+
+    // Publishing publicly
+    id "com.gradle.plugin-publish" version "0.20.0"
+
+    // Publishing to Artifactory
+    id 'maven-publish'
+}
+
+group 'io.github.crimix'
+version '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+gradlePlugin {
+    plugins {
+        placeholderPlugin {
+            id = 'io.github.crimix.replace-placeholders'
+            implementationClass = 'io.github.crimix.replaceplaceholders.ReplacePlaceholdersPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/Crimix/ReplacePlaceholdersPlugin'
+    vcsUrl = 'https://github.com/Crimix/ReplacePlaceholdersPlugin'
+
+    plugins {
+        changedProjectsPlugin {
+            // id is captured from java-gradle-plugin configuration
+            displayName = 'Replace Placeholders Plugin'
+            description = 'A Gradle plugin that configures ProcessResources task from Java Plugin to replace placeholders dynamically using prefixed properties'
+            tags = ['placeholders', 'expand', 'replace', 'ProcessResources']
+        }
+    }
+}
+
+publishToMavenLocal.dependsOn(validatePlugins)
+publishPlugins.dependsOn(validatePlugins)
