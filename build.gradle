@@ -28,7 +28,7 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        placeholderPlugin {
+        replacePlaceholdersPlugin {
             id = 'io.github.crimix.replace-placeholders'
             implementationClass = 'io.github.crimix.replaceplaceholders.ReplacePlaceholdersPlugin'
         }
@@ -40,7 +40,7 @@ pluginBundle {
     vcsUrl = 'https://github.com/Crimix/ReplacePlaceholdersPlugin'
 
     plugins {
-        changedProjectsPlugin {
+        replacePlaceholdersPlugin {
             // id is captured from java-gradle-plugin configuration
             displayName = 'Replace Placeholders Plugin'
             description = 'A Gradle plugin that configures ProcessResources task from Java Plugin to replace placeholders dynamically using prefixed properties'
