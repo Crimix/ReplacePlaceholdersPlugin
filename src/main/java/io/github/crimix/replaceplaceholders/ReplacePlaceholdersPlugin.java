@@ -38,6 +38,9 @@ public class ReplacePlaceholdersPlugin implements Plugin<Project> {
             // This will ensure that this task is redone when the versions change.
             processResources.getInputs().property("version", project.getProperties().get("version"));
 
+            // This will ensure that this task is redone when a property we can map, is changed.
+            processResources.getInputs().properties(properties);
+
             // If the there were no configured files, just skip configuring it for now
             if (!files.isEmpty())
                 processResources.filesMatching(files, fileCopyDetails -> fileCopyDetails.expand(properties));
