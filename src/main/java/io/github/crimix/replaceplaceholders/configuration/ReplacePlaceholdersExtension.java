@@ -1,22 +1,27 @@
 package io.github.crimix.replaceplaceholders.configuration;
 
-import io.github.crimix.replaceplaceholders.utils.Constants;
-import org.gradle.api.provider.SetProperty;
+import java.util.Set;
 
 /**
- * The configuration for the plugin
+ * Common extension methods
  */
-public interface ReplacePlaceholdersExtension {
+public abstract class ReplacePlaceholdersExtension {
 
     /**
-     * The list of file names that will get its placeholders expanded and replaced with the values.
-     * @return a list of file names.
+     * Gets if the task has been enabled.
+     * @return true if the task has been enabled otherwise false.
      */
-    SetProperty<String> getFilesToExpand();
+    abstract boolean getEnabled();
 
     /**
-     * The set of properties outside the {@link Constants#PLACEHOLDER_DOMAIN_PREFIX} domain that the plugin is allowed to use in expanding properties.
-     * @return a set of property names to use.
+     * Returns the files to limit the replacement to if any.
+     * @return the files to limit the replacement to if any.
      */
-    SetProperty<String> getExtraProperties();
+    abstract Set<String> getFiles();
+
+    /**
+     * Returns the extra properties to include when do the replacement.
+     * @return the extra property keys to include when do the replacement
+     */
+    abstract Set<String> getProperties();
 }

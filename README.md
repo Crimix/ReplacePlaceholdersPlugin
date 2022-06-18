@@ -1,8 +1,11 @@
 # Replace Placeholders Plugin
-A Gradle plugin to auto-configure the `ProcessResources` task from the Java plugin to replace placeholders in a list of files
+A Gradle plugin to auto-configure the `ProcessResources` task from the Java plugin to replace placeholders in a list of resource files
 with a set of properties, these properties are defined with a `placeholder.` prefix.  
 This way there is no need to both define the placeholder in the target file, in a gradle.properties file and in the build.gradle file, 
 but instead only declare it and add it to the target file without the `placeholder.` prefix.
+
+It also includes a `ProcessSources` task that can replace placeholders inside Java code using the Ant replace token pattern `@property_key@`.
+This task also uses the same `placeholder.` prefix as the `ProcessResources` task.
 
 ## Installation
 Recommended way is to apply the plugin to the `build.gradle` in the `plugins` block
@@ -12,14 +15,22 @@ plugins {
 }
 ```
 and then configure the plugin using the following block `build.gradle`
+
+For the resource files
 ```groovy
-replacePlaceholders {
-    filesToExpand = [
-            "some.file"
-    ]
-    extraProperties = [
-            "version"
-    ]
+replaceResourcePlaceholders {
+    enabled true
+    filesToExpand 'some.properties', 'someother.properties'
+    extraProperties 'version'
+}
+```
+
+For the source files
+```groovy
+replaceSourcePlaceholders {
+    enabled true
+    filesToExpand '**/SomeClass.java'
+    extraProperties 'version'
 }
 ```
 
@@ -28,7 +39,8 @@ As seen above, there are two configuration options available.
 
 | **Option**      | **Explanation**                                                                                                                                                                                                 |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| filesToExpand   | The required list of files to expand (replace) placeholders in.                                                                                                                                                 |
+| enabled         | If the specific task is enabled, the default is false<br>Such that you can decide if you want both `replaceResourcePlaceholders` and `replaceSourcePlaceholders`. 
+| filesToExpand   | The optional list of files to expand (replace) placeholders in.                                                                                                                                                 |
 | extraProperties | A list of property names that the plugin can use to expand placeholders, that does not start with `placeholder.`.<br>This way you get control over exactly which properties can be expanded into resource files |
 
 ## Usage
@@ -43,13 +55,10 @@ The following has been defined in `build.gradle`
 ```groovy
 version = '1.0-SNAPSHOT'
 
-replacePlaceholders {
-    filesToExpand = [
-            "META-INF/info.toml"
-    ]
-    extraProperties = [
-            "version"
-    ]
+replaceResourcePlaceholders {
+    enabled true
+    filesToExpand 'META-INF/info.toml'
+    extraProperties 'version'
 }
 ```
 
